@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="@string/pref_key_account"
+        android:title="Account">
+        <Preference
+            android:key="@string/pref_key_account_create"
+            android:title="Create account" />
+        <Preference
+            android:key="@string/pref_key_account_change_email"
+            android:title="Change email" />
+        <Preference
+            android:key="@string/pref_key_account_change_password"
+            android:title="Chang password" />
+        <Preference
+            android:key="@string/pref_key_account_log_in"
+            android:title="Log in" />
+        <Preference
+            android:key="@string/pref_key_account_log_out"
+            android:title="Log out" />
+        <Preference
+            android:key="@string/pref_key_account_delete"
+            android:title="Delete account" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/pref_key_about"
+        android:title="About">
+        <Preference
+            android:key="@string/pref_key_about_imprint"
+            android:title="Imprint" />
+        <Preference
+            android:key="@string/pref_key_about_privacy"
+            android:title="Privacy" />
+        <Preference
+            android:key="@string/pref_key_about_licenses"
+            android:title="Licenses" />
+        <Preference
+            android:key="@string/pref_key_about_contact"
+            android:title="Contact" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/pref_key_about_crash_reporting"
+            android:persistent="false"
+            android:title="Crash reporting" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_about_tracking"
+            android:persistent="false"
+            android:title="Tracking" />
+        <Preference
+            android:key="@string/pref_key_about_build"
+            android:title="Build info" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/pref_key_debug"
+        android:title="Debug">
+        <ListPreference
+            android:defaultValue="@string/backend_entry_values_testing"
+            android:entries="@array/backend_entries"
+            android:entryValues="@array/backend_entry_values"
+            android:key="@string/pref_key_debug_switch_backend"
+            android:persistent="false"
+            android:summary="dev"
+            android:title="Switch backend" />
+    </PreferenceCategory>
+</PreferenceScreen>

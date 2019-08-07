@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="backend_entry_values_testing">testing</string>
+    <string name="backend_entry_values_staging">staging</string>
+    <string name="backend_entry_values_production">production</string>
+    <string name="pref_key_account">account</string>
+    <string name="pref_key_account_create">account.create</string>
+    <string name="pref_key_account_change_email">account.changeEmail</string>
+    <string name="pref_key_account_change_password">account.changePassword</string>
+    <string name="pref_key_account_log_in">account.logIn</string>
+    <string name="pref_key_account_log_out">account.logOut</string>
+    <string name="pref_key_account_delete">account.delete</string>
+    <string name="pref_key_about">about</string>
+    <string name="pref_key_about_licenses">about.licenses</string>
+    <string name="pref_key_about_privacy">about.privacy</string>
+    <string name="pref_key_about_imprint">about.imprint</string>
+    <string name="pref_key_about_contact">pref.about.contact</string>
+    <string name="pref_key_about_tracking">about.tracking</string>
+    <string name="pref_key_about_crash_reporting">about.crashReporting</string>
+    <string name="pref_key_about_build">about.build</string>
+    <string name="pref_key_debug">debug</string>
+    <string name="pref_key_debug_switch_backend">debug.switchBackend</string>
+    <!--SharedPreferences Constants-->
+    <string-array name="backend_entry_values">
+        <item>@string/backend_entry_values_testing</item>
+        <item>@string/backend_entry_values_staging</item>
+        <item>@string/backend_entry_values_production</item>
+    </string-array>
+    <!--User visible-->
+    <string-array name="backend_entries">
+        <item>Testing</item>
+        <item>Staging</item>
+        <item>Production</item>
+    </string-array>
+</resources>

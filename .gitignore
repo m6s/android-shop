@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+local.properties
+
+# Mac
+.DS_Store
+
+# IntelliJ
+*.iml
+.idea/*
+!.idea/codeStyles
+!.idea/inspectionProfiles
+
+# Proguard
+proguard_logs/
+
+# Build
+/captures
+/app/release
+
+#
+tmp/
