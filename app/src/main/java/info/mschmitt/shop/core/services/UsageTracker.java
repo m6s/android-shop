@@ -22,7 +22,4 @@ public class UsageTracker {
     public boolean getEnabled() {
         return database.getTrackingEnabled();
     }
-
-    public void trackException(Throwable throwable) {
-    }
 }

@@ -23,21 +23,21 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Matthias Schmitt
  */
-public class RestClient {
+public class ApiClient {
     private static final String BASE_URL = "https://example.com/api/";
     private static final int MBYTE = 1024 * 1024;
     private static final String DATE_FORMAT = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'";
-    private final ApiService apiService;
+    private final ShopService shopService;
     private final Database database;
     private final String userAgent;
 
-    public RestClient(ApiService apiService) {
-        this.apiService = apiService;
+    public ApiClient(ShopService shopService) {
+        this.shopService = shopService;
         database = null;
         userAgent = null;
     }
 
-    public RestClient(File cacheDir, Database database, String userAgent) {
+    public ApiClient(File cacheDir, Database database, String userAgent) {
         this.database = database;
         this.userAgent = userAgent;
         Cache cache = new Cache(cacheDir, 10 * MBYTE);
@@ -59,7 +59,7 @@ public class RestClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient)
                 .build();
-        apiService = retrofit.create(ApiService.class);
+        shopService = retrofit.create(ShopService.class);
     }
 
     public Single<List<Article>> getArticles() {

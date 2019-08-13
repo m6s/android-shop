@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import info.mschmitt.shop.app.databinding.FragmentArticleDetailsBinding;
-import info.mschmitt.shop.core.database.Database;
 import info.mschmitt.shop.core.database.Article;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.database.Database;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 
@@ -19,17 +19,17 @@ public class ArticleDetailsFragment extends Fragment {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
     private final Database database;
-    private final RestClient restClient;
+    private final ApiClient apiClient;
     private FragmentArticleDetailsBinding binding;
     private Article article;
 
     public ArticleDetailsFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
-                                  RestClient restClient) {
+                                  ApiClient apiClient) {
         super(R.layout.fragment_article_details);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
     }
 
     @Override

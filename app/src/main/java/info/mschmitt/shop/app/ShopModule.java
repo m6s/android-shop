@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 import io.reactivex.schedulers.Schedulers;
@@ -19,21 +19,21 @@ public class ShopModule {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
     private final Database database;
-    private final RestClient restClient;
+    private final ApiClient apiClient;
 
-    public ShopModule(CrashReporter crashReporter, UsageTracker usageTracker, Database database, RestClient restClient) {
+    public ShopModule(CrashReporter crashReporter, UsageTracker usageTracker, Database database, ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
     }
 
     public static ShopModule create(Context context) {
         Database database = createDatabase(context);
-        RestClient restClient = createApiClient(context, database);
+        ApiClient apiClient = createApiClient(context, database);
         CrashReporter crashReporter = new CrashReporter();
         UsageTracker usageTracker = new UsageTracker(database);
-        return new ShopModule(crashReporter, usageTracker, database, restClient);
+        return new ShopModule(crashReporter, usageTracker, database, apiClient);
     }
 
     private static Database createDatabase(Context context) {
@@ -41,11 +41,11 @@ public class ShopModule {
         return new Database(filesDir, Schedulers.from(AsyncTask.SERIAL_EXECUTOR));
     }
 
-    public static RestClient createApiClient(Context context, Database database) {
+    public static ApiClient createApiClient(Context context, Database database) {
         File cacheDir = context.getCacheDir();
         String userAgent = String.format(Locale.US, "%s/%s (Linux; Android %s) okhttp3", BuildConfig.APPLICATION_ID,
                 BuildConfig.VERSION_CODE, Build.VERSION.RELEASE);
-        return new RestClient(cacheDir, database, userAgent);
+        return new ApiClient(cacheDir, database, userAgent);
     }
 
     public void inject(ShopApplication application) {
@@ -53,6 +53,6 @@ public class ShopModule {
     }
 
     public void inject(MainActivity activity) {
-        activity.setDependencies(crashReporter, usageTracker, database, restClient);
+        activity.setDependencies(crashReporter, usageTracker, database, apiClient);
     }
 }

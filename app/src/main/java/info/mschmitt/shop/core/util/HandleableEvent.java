@@ -9,27 +9,10 @@ import java.io.Serializable;
  * @author Matthias Schmitt
  */
 public class HandleableEvent<T> implements Serializable {
-    private final T content;
-    private boolean handled = false;
+    public final T content;
+    public boolean handled;
 
     public HandleableEvent(T content) {
         this.content = content;
-    }
-
-    public boolean isHandled() {
-        return handled;
-    }
-
-    public T getContentIfNotHandled() {
-        if (handled) {
-            return null;
-        } else {
-            handled = true;
-            return content;
-        }
-    }
-
-    public T peekContent() {
-        return content;
     }
 }

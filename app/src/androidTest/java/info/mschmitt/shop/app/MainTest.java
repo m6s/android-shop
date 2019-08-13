@@ -39,7 +39,8 @@ public class MainTest {
     @Test
     public void changeAllSettings() {
         pauseBegin();
-        onView(withText("Settings")).perform(click());
+//        onView(withText("Settings")).perform(click());
+        onView(withText("Settings")).perform(RealisticViewActions.touchDownAndUp(2, 0, 10, 10));
         pause();
         // https://stackoverflow.com/a/52144554
         onView(withId(R.id.recycler_view)).perform(actionOnItem(hasDescendant(withText("Change email")), scrollTo()));

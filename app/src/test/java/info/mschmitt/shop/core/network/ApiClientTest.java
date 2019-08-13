@@ -11,17 +11,17 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Matthias Schmitt
  */
-public class RestClientTest {
-    private RestClient restClient;
+public class ApiClientTest {
+    private ApiClient apiClient;
 
     @Before
     public void setUp() {
-        restClient = new RestClient(new ApiService() {});
+        apiClient = new ApiClient(new ShopService() {});
     }
 
     @Test
     public void getArticles() {
-        List<Article> articles = restClient.getArticles().blockingGet();
+        List<Article> articles = apiClient.getArticles().blockingGet();
         assertThat(articles).isNotEmpty();
     }
 }

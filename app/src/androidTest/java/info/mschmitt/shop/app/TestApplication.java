@@ -2,8 +2,8 @@ package info.mschmitt.shop.app;
 
 import info.mschmitt.shop.core.database.Config;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.ApiService;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
+import info.mschmitt.shop.core.network.ShopService;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 import org.jetbrains.annotations.NotNull;
@@ -47,8 +47,8 @@ public class TestApplication extends ShopApplication {
             TestApplication.database = mockDatabase();
             CrashReporter crashReporter = new CrashReporter();
             UsageTracker usageTracker = new UsageTracker(TestApplication.database);
-            RestClient restClient = new RestClient(new ApiService() {});
-            module = new ShopModule(crashReporter, usageTracker, TestApplication.database, restClient);
+            ApiClient apiClient = new ApiClient(new ShopService() {});
+            module = new ShopModule(crashReporter, usageTracker, TestApplication.database, apiClient);
         }
         return module;
     }

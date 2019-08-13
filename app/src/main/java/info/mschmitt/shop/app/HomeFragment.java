@@ -9,7 +9,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import info.mschmitt.shop.app.databinding.FragmentHomeBinding;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 
@@ -20,16 +20,18 @@ public class HomeFragment extends Fragment {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
     private final Database database;
-    private final RestClient restClient;
+    private final ApiClient apiClient;
     private FragmentHomeBinding binding;
+    private long aLong;
+    private long bLong;
 
     public HomeFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
-                        RestClient restClient) {
+                        ApiClient apiClient) {
         super(R.layout.fragment_home);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
     }
 
     @Override
@@ -40,19 +42,19 @@ public class HomeFragment extends Fragment {
     }
 
     private void onSettingsClick(View view) {
-        disableInteractions();
+        setEnabled(false);
         NavDirections directions = HomeFragmentDirections.actionHomeFragmentToSettingsFragment();
         NavHostFragment.findNavController(this).navigate(directions);
     }
 
     private void onArticleListClick(View view) {
-        disableInteractions();
+        setEnabled(false);
         NavDirections directions = HomeFragmentDirections.actionHomeFragmentToArticleListFragment();
         NavHostFragment.findNavController(this).navigate(directions);
     }
 
-    private void disableInteractions() {
-        binding.settingsButton.setEnabled(false);
-        binding.articleListButton.setEnabled(false);
+    private void setEnabled(boolean enabled) {
+        binding.settingsButton.setEnabled(enabled);
+        binding.articleListButton.setEnabled(enabled);
     }
 }

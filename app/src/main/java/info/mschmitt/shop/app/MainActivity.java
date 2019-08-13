@@ -11,7 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private CrashReporter crashReporter;
     private UsageTracker usageTracker;
     private Database database;
-    private RestClient restClient;
+    private ApiClient apiClient;
     private NavController.OnDestinationChangedListener onDestinationChangedListener =
             MainActivity.this::onDestinationChanged;
 
@@ -33,15 +33,15 @@ public class MainActivity extends AppCompatActivity {
                 if (className.equals(SplashFragment.class.getName())) {
                     return new SplashFragment();
                 } else if (className.equals(OnboardingFragment.class.getName())) {
-                    return new OnboardingFragment(crashReporter, usageTracker, database, restClient);
+                    return new OnboardingFragment(crashReporter, usageTracker, database, apiClient);
                 } else if (className.equals(HomeFragment.class.getName())) {
-                    return new HomeFragment(crashReporter, usageTracker, database, restClient);
+                    return new HomeFragment(crashReporter, usageTracker, database, apiClient);
                 } else if (className.equals(SettingsFragment.class.getName())) {
-                    return new SettingsFragment(crashReporter, usageTracker, database, restClient);
+                    return new SettingsFragment(crashReporter, usageTracker, database, apiClient);
                 } else if (className.equals(ArticleListFragment.class.getName())) {
-                    return new ArticleListFragment(crashReporter, usageTracker, database, restClient);
+                    return new ArticleListFragment(crashReporter, usageTracker, database, apiClient);
                 } else if (className.equals(ArticleDetailsFragment.class.getName())) {
-                    return new ArticleDetailsFragment(crashReporter, usageTracker, database, restClient);
+                    return new ArticleDetailsFragment(crashReporter, usageTracker, database, apiClient);
                 }
                 return super.instantiate(classLoader, className);
             }
@@ -76,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setDependencies(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
-                                RestClient restClient) {
+                                ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
     }
 }

@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.preference.*;
 import info.mschmitt.shop.app.databinding.FragmentSettingsBinding;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 
@@ -19,7 +19,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
     private final Database database;
-    private final RestClient restClient;
+    private final ApiClient apiClient;
     private FragmentSettingsBinding binding;
     private Preference buildPreference;
     private PreferenceGroup accountGroup;
@@ -39,11 +39,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private PreferenceGroup debugGroup;
     private ListPreference switchBackendPreference;
 
-    public SettingsFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database, RestClient restClient) {
+    public SettingsFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
+                            ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
     }
 
     @SuppressWarnings("ConstantConditions")

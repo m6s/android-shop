@@ -8,13 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import info.mschmitt.shop.core.database.Article;
 import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.RestClient;
+import info.mschmitt.shop.core.network.ApiClient;
 import info.mschmitt.shop.core.services.CrashReporter;
 import info.mschmitt.shop.core.services.UsageTracker;
 import info.mschmitt.shop.core.util.HandleableEvent;
 import info.mschmitt.shop.core.util.ViewModelUtils;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
 
 import java.util.List;
 
@@ -24,52 +24,50 @@ import java.util.List;
 public class ArticleListViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Article>> articles;
     private final MutableLiveData<Boolean> loading;
-    private final MutableLiveData<HandleableEvent<Throwable>> error;
+    private final MutableLiveData<HandleableEvent<Throwable>> errorEvent;
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
     private final Database database;
-    private final RestClient restClient;
-    private CompositeDisposable disposables = new CompositeDisposable();
-    private Disposable getArticlesDisposable;
+    private final ApiClient apiClient;
+    private Disposable getArticlesDisposable = Disposables.empty();
 
     public ArticleListViewModel(SavedStateHandle handle, Application application, CrashReporter crashReporter,
-                                UsageTracker usageTracker, Database database, RestClient restClient) {
+                                UsageTracker usageTracker, Database database, ApiClient apiClient) {
         super(application);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.database = database;
-        this.restClient = restClient;
+        this.apiClient = apiClient;
         articles = handle.getLiveData("articles");
         loading = handle.getLiveData("loading", false);
-        error = handle.getLiveData("error");
+        errorEvent = handle.getLiveData("errorEvent");
     }
 
     public static ArticleListViewModel of(Fragment fragment, CrashReporter crashReporter, UsageTracker usageTracker,
-                                          Database database, RestClient restClient) {
+                                          Database database, ApiClient apiClient) {
         return ViewModelUtils.provide(fragment, ArticleListViewModel.class,
                 (handle, application) -> new ArticleListViewModel(handle, application, crashReporter, usageTracker,
-                        database, restClient));
+                        database, apiClient));
     }
 
     @Override
     protected void onCleared() {
-        disposables.clear();
+        getArticlesDisposable.dispose();
     }
 
     public LiveData<Boolean> isLoading() {
         return loading;
     }
 
-    public LiveData<HandleableEvent<Throwable>> getError() {
-        return error;
+    public LiveData<HandleableEvent<Throwable>> getErrorEvent() {
+        return errorEvent;
     }
 
     public LiveData<List<Article>> getArticles() {
-        if (articles.getValue() == null && getArticlesDisposable == null) {
+        if (articles.getValue() == null) {
             loading.setValue(true);
             getArticlesDisposable =
-                    restClient.getArticles().subscribe(this::onGetArticlesSuccess, this::onGetArticlesError);
-            disposables.add(getArticlesDisposable);
+                    apiClient.getArticles().subscribe(this::onGetArticlesSuccess, this::onGetArticlesError);
         }
         return articles;
     }
@@ -81,7 +79,7 @@ public class ArticleListViewModel extends AndroidViewModel {
 
     private void onGetArticlesError(Throwable throwable) {
         loading.postValue(false);
-        error.postValue(new HandleableEvent<>(throwable));
-        usageTracker.trackException(throwable);
+        errorEvent.postValue(new HandleableEvent<>(throwable));
+        crashReporter.reportException(throwable);
     }
 }
