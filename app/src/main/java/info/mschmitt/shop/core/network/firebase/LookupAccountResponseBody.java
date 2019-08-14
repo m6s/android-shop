@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Matthias Schmitt
  */
-public class GetProfileResponseBody {
+public class LookupAccountResponseBody {
     /**
      * The account associated with the given Firebase ID token. Check below for more details.
      */

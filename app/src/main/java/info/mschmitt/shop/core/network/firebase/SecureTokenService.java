@@ -11,6 +11,9 @@ import retrofit2.http.POST;
 public interface SecureTokenService {
     String BASE_URL = "https://securetoken.googleapis.com/v1/";
 
+    /**
+     * Refresh a Firebase ID token
+     */
     //@formatter:off
     //curl 'https://securetoken.googleapis.com/v1/token?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/x-www-form-urlencoded' --data 'grant_type=refresh_token&refresh_token=xyz'
     //@formatter:on

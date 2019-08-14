@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 /**
  * @author Matthias Schmitt
  */
-public class GetProfileRequestBody {
+public class DeleteAccountRequestBody {
     /**
-     * A Firebase Auth ID token for the user.
+     * The Firebase ID token of the user to delete.
      */
     @SerializedName("idToken") public String idToken;
 }

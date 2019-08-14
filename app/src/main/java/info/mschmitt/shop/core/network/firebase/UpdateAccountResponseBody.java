@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Matthias Schmitt
  */
-public class UpdateProfileResponseBody {
+public class UpdateAccountResponseBody {
     /**
      * The uid of the current user.
      */

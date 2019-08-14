@@ -32,7 +32,7 @@ public class FirebaseServiceFactoryTest {
     }
 
     @Test
-    public void signUpWithEmailAndPassword() {
+    public void signUp() {
         signUp(EmailRandomizer.createEmail("user", "example.com"), "PASSWORD");
     }
 
@@ -42,7 +42,7 @@ public class FirebaseServiceFactoryTest {
     }
 
     @Test
-    public void signInWithPassword() {
+    public void signIn() {
         String email = EmailRandomizer.createEmail("user", "example.com");
         String password = "PASSWORD";
         signUp(email, password);
@@ -66,25 +66,25 @@ public class FirebaseServiceFactoryTest {
     }
 
     @Test
-    public void updateProfile() {
+    public void updateAccount() {
         String email = EmailRandomizer.createEmail("user", "example.com");
         String password = "PASSWORD";
         SignUpResponseBody signUpResponseBody = signUp(email, password);
-        UpdateProfileRequestBody requestBody = new UpdateProfileRequestBody();
+        UpdateAccountRequestBody requestBody = new UpdateAccountRequestBody();
         requestBody.idToken = signUpResponseBody.idToken;
         requestBody.email = EmailRandomizer.createEmail("user", "example.com");
-        UpdateProfileResponseBody responseBody = identityToolkitService.updateProfile(requestBody).blockingGet();
+        UpdateAccountResponseBody responseBody = identityToolkitService.updateAccount(requestBody).blockingGet();
         assertThat(responseBody.email).isEqualTo(requestBody.email);
     }
 
     @Test
-    public void getProfile() {
+    public void lookupAccount() {
         String email = EmailRandomizer.createEmail("user", "example.com");
         String password = "PASSWORD";
         SignUpResponseBody signUpResponseBody = signUp(email, password);
-        GetProfileRequestBody requestBody = new GetProfileRequestBody();
+        LookupAccountRequestBody requestBody = new LookupAccountRequestBody();
         requestBody.idToken = signUpResponseBody.idToken;
-        GetProfileResponseBody responseBody = identityToolkitService.getProfile(requestBody).blockingGet();
+        LookupAccountResponseBody responseBody = identityToolkitService.lookupAccount(requestBody).blockingGet();
         assertThat(responseBody.users).hasSize(1);
     }
 
@@ -98,6 +98,16 @@ public class FirebaseServiceFactoryTest {
         SendEmailVerificationResponseBody responseBody =
                 identityToolkitService.sendEmailVerification(requestBody).blockingGet();
         assertThat(responseBody.email).isEqualTo(email);
+    }
+
+    @Test
+    public void deleteAccount() {
+        String email = EmailRandomizer.createEmail("user", "example.com");
+        String password = "PASSWORD";
+        SignUpResponseBody signUpResponseBody = signUp(email, password);
+        DeleteAccountRequestBody requestBody = new DeleteAccountRequestBody();
+        requestBody.idToken = signUpResponseBody.idToken;
+        identityToolkitService.deleteAccount(requestBody).blockingAwait();
     }
 
     private SignUpResponseBody signUp(String email, String password) {

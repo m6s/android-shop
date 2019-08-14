@@ -1,5 +1,6 @@
 package info.mschmitt.shop.core.network.firebase;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -45,31 +46,31 @@ public interface IdentityToolkitService {
      * Change a user's email, change a user's password, link an email/password, or update a user's profile (display name
      * / photo URL).
      * <p>
-     * {@link UpdateProfileRequestBody#idToken} required.
+     * {@link UpdateAccountRequestBody#idToken} required.
      */
     //@formatter:off
     //curl 'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"idToken":"ID_TOKEN","displayName":"NAME","photoUrl":"URL","returnSecureToken":true}'
     //@formatter:on
     @POST("./accounts:update")
     @Headers("Content-Type: application/json")
-    Single<UpdateProfileResponseBody> updateProfile(@Body UpdateProfileRequestBody body);
+    Single<UpdateAccountResponseBody> updateAccount(@Body UpdateAccountRequestBody body);
 
     /**
      * Get a user's data.
      * <p>
-     * {@link GetProfileRequestBody#idToken} required.
+     * {@link LookupAccountRequestBody#idToken} required.
      */
     //@formatter:off
     //curl 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"idToken":"FIREBASE_ID_TOKEN"}'
     //@formatter:on
     @POST("./accounts:lookup")
     @Headers("Content-Type: application/json")
-    Single<GetProfileResponseBody> getProfile(@Body GetProfileRequestBody body);
+    Single<LookupAccountResponseBody> lookupAccount(@Body LookupAccountRequestBody body);
 
     /**
      * Send an email verification for the current user.
      * <p>
-     * {@link UpdateProfileRequestBody#idToken} required.
+     * {@link SendEmailVerificationRequestBody#idToken} required.
      */
     //@formatter:off
     //curl 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"requestType":"VERIFY_EMAIL","idToken":"FIREBASE_ID_TOKEN"}'
@@ -77,4 +78,16 @@ public interface IdentityToolkitService {
     @POST("./accounts:sendOobCode")
     @Headers("Content-Type: application/json")
     Single<SendEmailVerificationResponseBody> sendEmailVerification(@Body SendEmailVerificationRequestBody body);
+
+    /**
+     * Delete current user.
+     * <p>
+     * {@link DeleteAccountRequestBody#idToken} required.
+     */
+    //@formatter:off
+    //curl 'https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"idToken":"FIREBASE_ID_TOKEN"}'
+    //@formatter:on
+    @POST("./accounts:delete")
+    @Headers("Content-Type: application/json")
+    Completable deleteAccount(@Body DeleteAccountRequestBody body);
 }

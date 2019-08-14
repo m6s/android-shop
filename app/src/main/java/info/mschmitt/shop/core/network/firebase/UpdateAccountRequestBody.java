@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Matthias Schmitt
  */
-public class UpdateProfileRequestBody {
+public class UpdateAccountRequestBody {
     public static final String ATTRIBUTE_DISPLAY_NAME = "DISPLAY_NAME";
     public static final String ATTRIBUTE_PHOTO_URL = "PHOTO_URL";
     /**
@@ -31,8 +31,8 @@ public class UpdateProfileRequestBody {
      */
     @SerializedName("photoUrl") public String photoUrl;
     /**
-     * List of attributes to delete, {@link UpdateProfileRequestBody#ATTRIBUTE_DISPLAY_NAME} or {@link
-     * UpdateProfileRequestBody#ATTRIBUTE_PHOTO_URL}. This will nullify these values.
+     * List of attributes to delete, {@link UpdateAccountRequestBody#ATTRIBUTE_DISPLAY_NAME} or {@link
+     * UpdateAccountRequestBody#ATTRIBUTE_PHOTO_URL}. This will nullify these values.
      */
     @SerializedName("deleteAttribute") public List<String> deleteAttribute;
     /**
