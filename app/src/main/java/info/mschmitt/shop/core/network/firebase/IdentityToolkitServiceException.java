@@ -3,7 +3,7 @@ package info.mschmitt.shop.core.network.firebase;
 /**
  * @author Matthias Schmitt
  */
-public class IdentityToolkitException extends Exception {
+public class IdentityToolkitServiceException extends Exception {
     /**
      * The email address is already in use by another account.
      */

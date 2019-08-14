@@ -3,7 +3,7 @@ package info.mschmitt.shop.core.network.firebase;
 /**
  * @author Matthias Schmitt
  */
-public class SecureTokenServiceException {
+public class SecureTokenServiceException extends Exception {
     /**
      * The user's credential is no longer valid. The user must sign in again.
      */

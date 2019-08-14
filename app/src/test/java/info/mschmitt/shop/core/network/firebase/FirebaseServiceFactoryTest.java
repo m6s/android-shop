@@ -54,6 +54,23 @@ public class FirebaseServiceFactoryTest {
     }
 
     @Test
+    public void signInWithInvalidPassword() {
+        String email = EmailRandomizer.createEmail("user", "example.com");
+        String password = "PASSWORD";
+        signUp(email, password);
+        SignInRequestBody requestBody = new SignInRequestBody();
+        requestBody.email = email;
+        requestBody.password = password + "X";
+        Throwable throwable = identityToolkitService
+                .signIn(requestBody)
+                .map(signInResponseBody -> (Throwable) null)
+                .onErrorReturn(t -> t)
+                .blockingGet();
+        assertThat(throwable).isInstanceOf(IdentityToolkitServiceException.class);
+        IdentityToolkitServiceException exception = (IdentityToolkitServiceException) throwable;
+    }
+
+    @Test
     public void refreshIdToken() {
         String email = EmailRandomizer.createEmail("user", "example.com");
         String refreshToken = signUp(email, "PASSWORD").refreshToken;
