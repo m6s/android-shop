@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.shop.core.network.firebase;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;

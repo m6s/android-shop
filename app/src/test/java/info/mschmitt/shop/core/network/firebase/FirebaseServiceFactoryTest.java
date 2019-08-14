@@ -1,14 +1,11 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.shop.core.network.firebase;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import info.mschmitt.testing.EmailRandomizer;
+import info.mschmitt.testing.LoggingUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Before;
 import org.junit.Test;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,25 +25,10 @@ public class FirebaseServiceFactoryTest {
         HttpLoggingInterceptor loggingInterceptor =
                 new HttpLoggingInterceptor(message -> logger.log(Level.INFO, message));
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addNetworkInterceptor(loggingInterceptor)
-                .addInterceptor(FirebaseServiceFactory::addApiKeyQueryParam)
-                .build();
-        Gson gson = new GsonBuilder().create();
-        identityToolkitService = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(httpClient)
-                .baseUrl(IdentityToolkitService.BASE_URL)
-                .build()
-                .create(IdentityToolkitService.class);
-        secureTokenService = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(httpClient)
-                .baseUrl(SecureTokenService.BASE_URL)
-                .build()
-                .create(SecureTokenService.class);
+        OkHttpClient httpClient = new OkHttpClient.Builder().addNetworkInterceptor(loggingInterceptor).build();
+        FirebaseServiceFactory factory = new FirebaseServiceFactory(httpClient);
+        identityToolkitService = factory.createIdentityToolkitService();
+        secureTokenService = factory.createSecureTokenService();
     }
 
     @Test
@@ -67,7 +49,7 @@ public class FirebaseServiceFactoryTest {
         SignInRequestBody requestBody = new SignInRequestBody();
         requestBody.email = email;
         requestBody.password = password;
-        SignInResponseBody responseBody = identityToolkitService.signInWithPassword(requestBody).blockingGet();
+        SignInResponseBody responseBody = identityToolkitService.signIn(requestBody).blockingGet();
         assertThat(responseBody.email).isEqualTo(email);
     }
 
@@ -104,6 +86,18 @@ public class FirebaseServiceFactoryTest {
         requestBody.idToken = signUpResponseBody.idToken;
         GetProfileResponseBody responseBody = identityToolkitService.getProfile(requestBody).blockingGet();
         assertThat(responseBody.users).hasSize(1);
+    }
+
+    @Test
+    public void sendEmailVerification() {
+        String email = EmailRandomizer.createEmail("user", "example.com");
+        String password = "PASSWORD";
+        SignUpResponseBody signUpResponseBody = signUp(email, password);
+        SendEmailVerificationRequestBody requestBody = new SendEmailVerificationRequestBody();
+        requestBody.idToken = signUpResponseBody.idToken;
+        SendEmailVerificationResponseBody responseBody =
+                identityToolkitService.sendEmailVerification(requestBody).blockingGet();
+        assertThat(responseBody.email).isEqualTo(email);
     }
 
     private SignUpResponseBody signUp(String email, String password) {

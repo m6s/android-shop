@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.shop.core.network.firebase;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -39,10 +39,11 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:signInWithPassword")
     @Headers("Content-Type: application/json")
-    Single<SignInResponseBody> signInWithPassword(@Body SignInRequestBody body);
+    Single<SignInResponseBody> signIn(@Body SignInRequestBody body);
 
     /**
-     * Change a user's email, change a user's password, or update a user's profile (display name / photo URL).
+     * Change a user's email, change a user's password, link an email/password, or update a user's profile (display name
+     * / photo URL).
      * <p>
      * {@link UpdateProfileRequestBody#idToken} required.
      */
@@ -56,7 +57,7 @@ public interface IdentityToolkitService {
     /**
      * Get a user's data.
      * <p>
-     * {@link UpdateProfileRequestBody#idToken} required.
+     * {@link GetProfileRequestBody#idToken} required.
      */
     //@formatter:off
     //curl 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"idToken":"FIREBASE_ID_TOKEN"}'
@@ -64,4 +65,16 @@ public interface IdentityToolkitService {
     @POST("./accounts:lookup")
     @Headers("Content-Type: application/json")
     Single<GetProfileResponseBody> getProfile(@Body GetProfileRequestBody body);
+
+    /**
+     * Send an email verification for the current user.
+     * <p>
+     * {@link UpdateProfileRequestBody#idToken} required.
+     */
+    //@formatter:off
+    //curl 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBhfQrEexLAvIBO3vd4fkwZu9i3u1KP3ek' -H 'Content-Type: application/json' --data-binary '{"requestType":"VERIFY_EMAIL","idToken":"FIREBASE_ID_TOKEN"}'
+    //@formatter:on
+    @POST("./accounts:sendOobCode")
+    @Headers("Content-Type: application/json")
+    Single<SendEmailVerificationResponseBody> sendEmailVerification(@Body SendEmailVerificationRequestBody body);
 }

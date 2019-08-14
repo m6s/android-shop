@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.shop.core.network.firebase;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -21,22 +21,22 @@ public class UpdateProfileRequestBody {
     /**
      * A Firebase Auth ID token for the user.
      */
-    @SerializedName("idToken") String idToken;
+    @SerializedName("idToken") public String idToken;
     /**
      * User's new display name.
      */
-    @SerializedName("displayName") String displayName;
+    @SerializedName("displayName") public String displayName;
     /**
      * User's new photo url.
      */
-    @SerializedName("photoUrl") String photoUrl;
+    @SerializedName("photoUrl") public String photoUrl;
     /**
      * List of attributes to delete, {@link UpdateProfileRequestBody#ATTRIBUTE_DISPLAY_NAME} or {@link
      * UpdateProfileRequestBody#ATTRIBUTE_PHOTO_URL}. This will nullify these values.
      */
-    @SerializedName("deleteAttribute") List<String> deleteAttribute;
+    @SerializedName("deleteAttribute") public List<String> deleteAttribute;
     /**
      * Whether or not to return an ID and refresh token.
      */
-    @SerializedName("returnSecureToken") boolean returnSecureToken;
+    @SerializedName("returnSecureToken") public boolean returnSecureToken;
 }

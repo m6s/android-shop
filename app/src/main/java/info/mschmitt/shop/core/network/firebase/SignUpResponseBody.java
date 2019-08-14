@@ -1,17 +1,17 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.shop.core.network.firebase;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
  * @author Matthias Schmitt
  */
-public class SignInResponseBody {
+public class SignUpResponseBody {
     /**
-     * A Firebase Auth ID token for the authenticated user.
+     * A Firebase Auth ID token for the newly created user.
      */
     @SerializedName("idToken") public String idToken;
     /**
-     * The email for the authenticated user.
+     * The email for the newly created user or empty if anonymous sign-up.
      */
     @SerializedName("email") public String email;
     /**
@@ -23,15 +23,11 @@ public class SignInResponseBody {
      */
     @SerializedName("expiresIn") public long expiresIn;
     /**
-     * The uid of the authenticated user.
+     * The uid of the newly created user.
      */
     @SerializedName("localId") public String localId;
     /**
-     * Whether the email is for an existing account.
-     */
-    @SerializedName("registered") public String registered;
-    /**
-     * Not specified
+     * Not specified. Will be "identitytoolkit#SignupNewUserResponse".
      */
     @SerializedName("kind") public String kind;
 }

@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network;
+package info.mschmitt.testing;
 
 import okhttp3.OkHttpClient;
 
