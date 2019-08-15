@@ -66,8 +66,9 @@ public class FirebaseServiceFactoryTest {
                 .map(signInResponseBody -> (Throwable) null)
                 .onErrorReturn(t -> t)
                 .blockingGet();
-        assertThat(throwable).isInstanceOf(IdentityToolkitServiceException.class);
-        IdentityToolkitServiceException exception = (IdentityToolkitServiceException) throwable;
+        assertThat(throwable).isInstanceOf(FirebaseServiceException.class);
+        FirebaseServiceException serviceException = (FirebaseServiceException) throwable;
+        assertThat(serviceException.error.message).isEqualTo(FirebaseServiceException.INVALID_PASSWORD);
     }
 
     @Test

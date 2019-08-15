@@ -1,5 +1,6 @@
 package info.mschmitt.shop.core.network.firebase;
 
+import info.mschmitt.shop.core.util.HttpExceptionMapping;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -27,6 +28,7 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:signUp")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<SignUpResponseBody> signUp(@Body SignUpRequestBody body);
 
     /**
@@ -40,6 +42,7 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:signInWithPassword")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<SignInResponseBody> signIn(@Body SignInRequestBody body);
 
     /**
@@ -53,6 +56,7 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:update")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<UpdateAccountResponseBody> updateAccount(@Body UpdateAccountRequestBody body);
 
     /**
@@ -65,6 +69,7 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:lookup")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<LookupAccountResponseBody> lookupAccount(@Body LookupAccountRequestBody body);
 
     /**
@@ -77,6 +82,7 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:sendOobCode")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<SendEmailVerificationResponseBody> sendEmailVerification(@Body SendEmailVerificationRequestBody body);
 
     /**
@@ -89,5 +95,6 @@ public interface IdentityToolkitService {
     //@formatter:on
     @POST("./accounts:delete")
     @Headers("Content-Type: application/json")
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Completable deleteAccount(@Body DeleteAccountRequestBody body);
 }

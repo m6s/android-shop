@@ -1,5 +1,6 @@
 package info.mschmitt.shop.core.network.firebase;
 
+import info.mschmitt.shop.core.util.HttpExceptionMapping;
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -19,6 +20,7 @@ public interface SecureTokenService {
     //@formatter:on
     @POST("./token")
     @FormUrlEncoded
+    @HttpExceptionMapping(errorCode = 400, exceptionClass = FirebaseServiceException.class)
     Single<RefreshIdTokenResponseBody> refreshIdToken(@Field("grant_type") String grantType,
                                                       @Field("refresh_token") String refreshToken);
 }
