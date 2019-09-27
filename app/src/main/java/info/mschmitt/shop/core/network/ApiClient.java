@@ -22,7 +22,7 @@ public class ApiClient {
     private final IdentityToolkitService identityToolkitService;
     private final SecureTokenService secureTokenService;
     private final DataStore dataStore;
-    private final String userAgent;
+    private final UserAgent userAgent;
 
     public ApiClient(ShopService shopService, IdentityToolkitService identityToolkitService,
                      SecureTokenService secureTokenService) {
@@ -30,14 +30,23 @@ public class ApiClient {
         this.identityToolkitService = identityToolkitService;
         this.secureTokenService = secureTokenService;
         dataStore = null;
-        userAgent = null;
+        userAgent = new UserAgent();
     }
 
-    public ApiClient(File cacheDir, DataStore dataStore, String userAgent) {
+    public ApiClient(OkHttpClient httpClient, DataStore dataStore, UserAgent userAgent) {
         this.dataStore = dataStore;
         this.userAgent = userAgent;
+        FirebaseServiceFactory firebaseServiceFactory = new FirebaseServiceFactory(httpClient);
+        identityToolkitService = firebaseServiceFactory.createIdentityToolkitService();
+        secureTokenService = firebaseServiceFactory.createSecureTokenService();
+        shopService = new ShopServiceFactory(httpClient, secureTokenService, dataStore,
+                userAgent).createShopService();
+    }
+
+    public static OkHttpClient createHttpClient(File cacheDir) {
         Cache cache = new Cache(cacheDir, 10 * MBYTE);
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache)
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .cache(cache)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS);
         if (BuildConfig.DEBUG) {
@@ -45,16 +54,12 @@ public class ApiClient {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addNetworkInterceptor(loggingInterceptor);
         }
-        // Use this httpClient for initial login/re-auth
-        OkHttpClient httpClient = builder.build();
-        FirebaseServiceFactory firebaseServiceFactory = new FirebaseServiceFactory(httpClient);
-        identityToolkitService = firebaseServiceFactory.createIdentityToolkitService();
-        secureTokenService = firebaseServiceFactory.createSecureTokenService();
-        shopService = new ShopServiceFactory(httpClient, dataStore, userAgent).createShopService();
+        return builder.build();
     }
 
     public Single<List<Article>> getArticles() {
-        // TODO Fetch from network using shopService. Adapt in/out parameters and propagate HTTP errors to throwables.
+        // TODO Fetch from network using shopService. Adapt in/out parameters and propagate HTTP
+        //  errors to throwables.
         List<Article> articles = new ArrayList<>();
         Article article = new Article();
         article.name = "Article A";

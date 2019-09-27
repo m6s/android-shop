@@ -57,6 +57,6 @@
         android:label="ArticleDetailsFragment">
         <argument
             android:name="article"
-            app:argType="info.mschmitt.shop.core.dataStore.Article" />
+            app:argType="info.mschmitt.shop.core.storage.Article" />
     </fragment>
 </navigation>
