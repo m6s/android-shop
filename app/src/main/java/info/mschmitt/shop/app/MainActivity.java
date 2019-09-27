@@ -1,6 +1,7 @@
 package info.mschmitt.shop.app;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,15 +11,16 @@ import androidx.fragment.app.FragmentFactory;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
-import info.mschmitt.shop.core.database.Database;
+
+import info.mschmitt.shop.core.CrashReporter;
+import info.mschmitt.shop.core.UsageTracker;
 import info.mschmitt.shop.core.network.ApiClient;
-import info.mschmitt.shop.core.services.CrashReporter;
-import info.mschmitt.shop.core.services.UsageTracker;
+import info.mschmitt.shop.core.storage.DataStore;
 
 public class MainActivity extends AppCompatActivity {
     private CrashReporter crashReporter;
     private UsageTracker usageTracker;
-    private Database database;
+    private DataStore dataStore;
     private ApiClient apiClient;
     private NavController.OnDestinationChangedListener onDestinationChangedListener =
             MainActivity.this::onDestinationChanged;
@@ -33,15 +35,18 @@ public class MainActivity extends AppCompatActivity {
                 if (className.equals(SplashFragment.class.getName())) {
                     return new SplashFragment();
                 } else if (className.equals(OnboardingFragment.class.getName())) {
-                    return new OnboardingFragment(crashReporter, usageTracker, database, apiClient);
+                    return new OnboardingFragment(crashReporter, usageTracker, dataStore,
+                            apiClient);
                 } else if (className.equals(HomeFragment.class.getName())) {
-                    return new HomeFragment(crashReporter, usageTracker, database, apiClient);
+                    return new HomeFragment(crashReporter, usageTracker, dataStore, apiClient);
                 } else if (className.equals(SettingsFragment.class.getName())) {
-                    return new SettingsFragment(crashReporter, usageTracker, database, apiClient);
+                    return new SettingsFragment(crashReporter, usageTracker, dataStore, apiClient);
                 } else if (className.equals(ArticleListFragment.class.getName())) {
-                    return new ArticleListFragment(crashReporter, usageTracker, database, apiClient);
+                    return new ArticleListFragment(crashReporter, usageTracker, dataStore,
+                            apiClient);
                 } else if (className.equals(ArticleDetailsFragment.class.getName())) {
-                    return new ArticleDetailsFragment(crashReporter, usageTracker, database, apiClient);
+                    return new ArticleDetailsFragment(crashReporter, usageTracker, dataStore,
+                            apiClient);
                 }
                 return super.instantiate(classLoader, className);
             }
@@ -75,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setDependencies(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
+    public void setDependencies(CrashReporter crashReporter, UsageTracker usageTracker,
+                                DataStore dataStore,
                                 ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
-        this.database = database;
+        this.dataStore = dataStore;
         this.apiClient = apiClient;
     }
 }

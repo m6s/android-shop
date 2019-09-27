@@ -3,14 +3,20 @@ package info.mschmitt.shop.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-import androidx.preference.*;
-import info.mschmitt.shop.app.databinding.FragmentSettingsBinding;
-import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.ApiClient;
-import info.mschmitt.shop.core.services.CrashReporter;
-import info.mschmitt.shop.core.services.UsageTracker;
+
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
+import androidx.preference.SwitchPreference;
 
 import java.util.Locale;
+
+import info.mschmitt.shop.app.databinding.FragmentSettingsBinding;
+import info.mschmitt.shop.core.CrashReporter;
+import info.mschmitt.shop.core.UsageTracker;
+import info.mschmitt.shop.core.network.ApiClient;
+import info.mschmitt.shop.core.storage.DataStore;
 
 /**
  * @author Matthias Schmitt
@@ -18,7 +24,7 @@ import java.util.Locale;
 public class SettingsFragment extends PreferenceFragmentCompat {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
-    private final Database database;
+    private final DataStore dataStore;
     private final ApiClient apiClient;
     private FragmentSettingsBinding binding;
     private Preference buildPreference;
@@ -39,11 +45,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private PreferenceGroup debugGroup;
     private ListPreference switchBackendPreference;
 
-    public SettingsFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
+    public SettingsFragment(CrashReporter crashReporter, UsageTracker usageTracker,
+                            DataStore dataStore,
                             ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
-        this.database = database;
+        this.dataStore = dataStore;
         this.apiClient = apiClient;
     }
 
@@ -84,7 +91,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private boolean onSwitchBackendChange(Preference preference, Object newValue) {
         String backend = (String) newValue;
-        database.setBackend(backend);
+        dataStore.setBackend(backend);
         updatePreferences();
         return true;
     }
@@ -99,17 +106,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private boolean onBuildClick(Preference preference) {
         Toast.makeText(getContext(), "Developer settings enabled", Toast.LENGTH_LONG).show();
-        database.setDeveloperModeEnabled(true);
+        dataStore.setDeveloperModeEnabled(true);
         updatePreferences();
         return true;
     }
 
     private void updatePreferences() {
-        changeEmailPreference.setSummary(database.getEmail());
+        changeEmailPreference.setSummary(dataStore.getEmail());
         trackingPreference.setChecked(usageTracker.getEnabled());
         createAccountPreference.setVisible(false);
         logInPreference.setVisible(false);
-        String backend = database.getBackend();
+        String backend = dataStore.getBackend();
         if (backend.equals(getString(R.string.backend_entry_values_testing))) {
             switchBackendPreference.setSummary("Testing");
         } else if (backend.equals(getString(R.string.backend_entry_values_staging))) {
@@ -117,7 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         } else if (backend.equals(getString(R.string.backend_entry_values_production))) {
             switchBackendPreference.setSummary("Production");
         }
-        debugGroup.setVisible(database.getDeveloperModeEnabled());
+        debugGroup.setVisible(dataStore.getDeveloperModeEnabled());
         String buildSummary =
                 String.format(Locale.getDefault(), "%s/%d", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         buildPreference.setSummary(buildSummary);

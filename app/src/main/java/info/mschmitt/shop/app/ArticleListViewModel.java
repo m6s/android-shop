@@ -1,22 +1,24 @@
 package info.mschmitt.shop.app;
 
 import android.app.Application;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
-import info.mschmitt.shop.core.database.Article;
-import info.mschmitt.shop.core.database.Database;
+
+import java.util.List;
+
+import info.mschmitt.shop.core.CrashReporter;
+import info.mschmitt.shop.core.UsageTracker;
 import info.mschmitt.shop.core.network.ApiClient;
-import info.mschmitt.shop.core.services.CrashReporter;
-import info.mschmitt.shop.core.services.UsageTracker;
+import info.mschmitt.shop.core.storage.Article;
+import info.mschmitt.shop.core.storage.DataStore;
 import info.mschmitt.shop.core.util.HandleableEvent;
 import info.mschmitt.shop.core.util.ViewModelUtils;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-
-import java.util.List;
 
 /**
  * @author Matthias Schmitt
@@ -27,27 +29,29 @@ public class ArticleListViewModel extends AndroidViewModel {
     private final MutableLiveData<HandleableEvent<Throwable>> errorEvent;
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
-    private final Database database;
+    private final DataStore dataStore;
     private final ApiClient apiClient;
     private Disposable getArticlesDisposable = Disposables.empty();
 
     public ArticleListViewModel(SavedStateHandle handle, Application application, CrashReporter crashReporter,
-                                UsageTracker usageTracker, Database database, ApiClient apiClient) {
+                                UsageTracker usageTracker, DataStore dataStore,
+                                ApiClient apiClient) {
         super(application);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
-        this.database = database;
+        this.dataStore = dataStore;
         this.apiClient = apiClient;
         articles = handle.getLiveData("articles");
         loading = handle.getLiveData("loading", false);
         errorEvent = handle.getLiveData("errorEvent");
     }
 
-    public static ArticleListViewModel of(Fragment fragment, CrashReporter crashReporter, UsageTracker usageTracker,
-                                          Database database, ApiClient apiClient) {
+    public static ArticleListViewModel of(Fragment fragment, CrashReporter crashReporter,
+                                          UsageTracker usageTracker,
+                                          DataStore dataStore, ApiClient apiClient) {
         return ViewModelUtils.provide(fragment, ArticleListViewModel.class,
                 (handle, application) -> new ArticleListViewModel(handle, application, crashReporter, usageTracker,
-                        database, apiClient));
+                        dataStore, apiClient));
     }
 
     @Override

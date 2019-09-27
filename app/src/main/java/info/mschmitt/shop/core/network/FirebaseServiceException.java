@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -56,24 +56,28 @@ public class FirebaseServiceException extends Exception {
     /**
      * TODO Broken Firebase documentation API key not valid. Please pass a valid API key. (invalid API key provided)
      */
-    public final String INVALID_API_KEY = "INVALID_API_KEY";
+    public static final String INVALID_API_KEY = "INVALID_API_KEY";
     /**
      * An invalid refresh token is provided.
      */
-    public final String INVALID_REFRESH_TOKEN = "INVALID_REFRESH_TOKEN";
+    public static final String INVALID_REFRESH_TOKEN = "INVALID_REFRESH_TOKEN";
     /**
      * TODO Broken Firebase documentation Invalid JSON payload received. Unknown name \"refresh_tokens\": Cannot bind
      * query parameter. Field 'refresh_tokens' could not be found in request message.
      */
-    public final String INVALID_PAYLOAD = "INVALID_PAYLOAD";
+    public static final String INVALID_PAYLOAD = "INVALID_PAYLOAD";
     /**
      * the grant type specified is invalid.
      */
-    public final String INVALID_GRANT_TYPE = "INVALID_GRANT_TYPE";
+    public static final String INVALID_GRANT_TYPE = "INVALID_GRANT_TYPE";
     /**
      * no refresh token provided.
      */
-    public final String MISSING_REFRESH_TOKEN = "MISSING_REFRESH_TOKEN";
+    public static final String MISSING_REFRESH_TOKEN = "MISSING_REFRESH_TOKEN";
+    /**
+     * no password provided.
+     */
+    public static final String MISSING_PASSWORD = "MISSING_PASSWORD";
     @SerializedName("error") public Error error;
 
     public static class Error {

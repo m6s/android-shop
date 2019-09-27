@@ -3,14 +3,16 @@ package info.mschmitt.shop.app;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import info.mschmitt.shop.app.databinding.ItemArticleBinding;
-import info.mschmitt.shop.core.database.Article;
-import info.mschmitt.shop.core.util.DataBindingViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import info.mschmitt.shop.app.databinding.ItemArticleBinding;
+import info.mschmitt.shop.core.storage.Article;
+import info.mschmitt.shop.core.util.DataBindingViewHolder;
 
 /**
  * @author Matthias Schmitt

@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.services;
+package info.mschmitt.shop.core;
 
 /**
  * @author Matthias Schmitt

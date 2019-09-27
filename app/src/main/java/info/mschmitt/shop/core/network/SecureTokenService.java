@@ -1,5 +1,6 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network;
 
+import info.mschmitt.shop.core.network.messages.RefreshIdTokenResponseBody;
 import info.mschmitt.shop.core.util.HttpExceptionMapping;
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -11,6 +12,7 @@ import retrofit2.http.POST;
  */
 public interface SecureTokenService {
     String BASE_URL = "https://securetoken.googleapis.com/v1/";
+    String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
 
     /**
      * Refresh a Firebase ID token

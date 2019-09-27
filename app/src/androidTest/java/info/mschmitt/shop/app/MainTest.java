@@ -2,6 +2,7 @@ package info.mschmitt.shop.app;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +16,10 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -32,8 +36,8 @@ public class MainTest {
      * by that time.
      */
     public MainTest() {
-        when(TestApplication.database.getBackend()).thenReturn("testing");
-        when(TestApplication.database.getEmail()).thenReturn("m6stestlab@gmail.com");
+        when(TestApplication.dataStore.getBackend()).thenReturn("testing");
+        when(TestApplication.dataStore.getEmail()).thenReturn("m6stestlab@gmail.com");
     }
 
     @Test
@@ -45,9 +49,9 @@ public class MainTest {
         // https://stackoverflow.com/a/52144554
         onView(withId(R.id.recycler_view)).perform(actionOnItem(hasDescendant(withText("Change email")), scrollTo()));
         onView(withText("m6stestlab@gmail.com")).check(matches(isDisplayed()));
-        assertThat(TestApplication.database.getTrackingEnabled()).isFalse();
+        assertThat(TestApplication.dataStore.getTrackingEnabled()).isFalse();
         onView(withId(R.id.recycler_view)).perform(actionOnItem(hasDescendant(withText("Tracking")), click()));
-        assertThat(TestApplication.database.getTrackingEnabled()).isTrue();
+        assertThat(TestApplication.dataStore.getTrackingEnabled()).isTrue();
         pause();
         onView(withId(R.id.recycler_view)).perform(actionOnItem(hasDescendant(withText("Build info")), click()));
         pause();

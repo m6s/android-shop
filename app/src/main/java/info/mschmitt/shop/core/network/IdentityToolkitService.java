@@ -1,5 +1,16 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network;
 
+import info.mschmitt.shop.core.network.messages.DeleteAccountRequestBody;
+import info.mschmitt.shop.core.network.messages.LookupAccountRequestBody;
+import info.mschmitt.shop.core.network.messages.LookupAccountResponseBody;
+import info.mschmitt.shop.core.network.messages.SendEmailVerificationRequestBody;
+import info.mschmitt.shop.core.network.messages.SendEmailVerificationResponseBody;
+import info.mschmitt.shop.core.network.messages.SignInRequestBody;
+import info.mschmitt.shop.core.network.messages.SignInResponseBody;
+import info.mschmitt.shop.core.network.messages.SignUpRequestBody;
+import info.mschmitt.shop.core.network.messages.SignUpResponseBody;
+import info.mschmitt.shop.core.network.messages.UpdateAccountRequestBody;
+import info.mschmitt.shop.core.network.messages.UpdateAccountResponseBody;
 import info.mschmitt.shop.core.util.HttpExceptionMapping;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -8,7 +19,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
- * Read <a href="https://firebase.google.com/docs/reference/rest/auth">Authentication and user management</a> and
+ * Read <a href="https://firebase.google.com/docs/reference/rest/auth">Authentication and user
+ * management</a> and
  * <a href="https://stackoverflow.com/q/54525554">Restrict API key usage</a>
  *
  * @author Matthias Schmitt

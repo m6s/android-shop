@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.database;
+package info.mschmitt.shop.core.storage;
 
 import java.io.Serializable;
 

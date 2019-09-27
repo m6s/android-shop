@@ -1,20 +1,17 @@
 package info.mschmitt.shop.core.network;
 
-import info.mschmitt.shop.app.BuildConfig;
-import info.mschmitt.shop.core.database.Article;
-import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.firebase.FirebaseServiceFactory;
-import info.mschmitt.shop.core.network.firebase.IdentityToolkitService;
-import info.mschmitt.shop.core.network.firebase.SecureTokenService;
-import io.reactivex.Single;
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import info.mschmitt.shop.app.BuildConfig;
+import info.mschmitt.shop.core.storage.Article;
+import info.mschmitt.shop.core.storage.DataStore;
+import io.reactivex.Single;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * @author Matthias Schmitt
@@ -24,7 +21,7 @@ public class ApiClient {
     private final ShopService shopService;
     private final IdentityToolkitService identityToolkitService;
     private final SecureTokenService secureTokenService;
-    private final Database database;
+    private final DataStore dataStore;
     private final String userAgent;
 
     public ApiClient(ShopService shopService, IdentityToolkitService identityToolkitService,
@@ -32,12 +29,12 @@ public class ApiClient {
         this.shopService = shopService;
         this.identityToolkitService = identityToolkitService;
         this.secureTokenService = secureTokenService;
-        database = null;
+        dataStore = null;
         userAgent = null;
     }
 
-    public ApiClient(File cacheDir, Database database, String userAgent) {
-        this.database = database;
+    public ApiClient(File cacheDir, DataStore dataStore, String userAgent) {
+        this.dataStore = dataStore;
         this.userAgent = userAgent;
         Cache cache = new Cache(cacheDir, 10 * MBYTE);
         OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache)
@@ -53,7 +50,7 @@ public class ApiClient {
         FirebaseServiceFactory firebaseServiceFactory = new FirebaseServiceFactory(httpClient);
         identityToolkitService = firebaseServiceFactory.createIdentityToolkitService();
         secureTokenService = firebaseServiceFactory.createSecureTokenService();
-        shopService = new ShopServiceFactory(httpClient, database, userAgent).createShopService();
+        shopService = new ShopServiceFactory(httpClient, dataStore, userAgent).createShopService();
     }
 
     public Single<List<Article>> getArticles() {

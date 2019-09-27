@@ -2,6 +2,7 @@ package info.mschmitt.shop.app;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -11,15 +12,16 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import info.mschmitt.shop.app.databinding.FragmentArticleListBinding;
-import info.mschmitt.shop.core.database.Article;
-import info.mschmitt.shop.core.database.Database;
-import info.mschmitt.shop.core.network.ApiClient;
-import info.mschmitt.shop.core.services.CrashReporter;
-import info.mschmitt.shop.core.services.UsageTracker;
-import info.mschmitt.shop.core.util.HandleableEvent;
 
 import java.util.List;
+
+import info.mschmitt.shop.app.databinding.FragmentArticleListBinding;
+import info.mschmitt.shop.core.CrashReporter;
+import info.mschmitt.shop.core.UsageTracker;
+import info.mschmitt.shop.core.network.ApiClient;
+import info.mschmitt.shop.core.storage.Article;
+import info.mschmitt.shop.core.storage.DataStore;
+import info.mschmitt.shop.core.util.HandleableEvent;
 
 /**
  * @author Matthias Schmitt
@@ -27,18 +29,19 @@ import java.util.List;
 public class ArticleListFragment extends Fragment {
     private final CrashReporter crashReporter;
     private final UsageTracker usageTracker;
-    private final Database database;
+    private final DataStore dataStore;
     private final ApiClient apiClient;
     private FragmentArticleListBinding binding;
     private ArticleListViewModel viewModel;
     private ArticleListAdapter adapter;
 
-    public ArticleListFragment(CrashReporter crashReporter, UsageTracker usageTracker, Database database,
+    public ArticleListFragment(CrashReporter crashReporter, UsageTracker usageTracker,
+                               DataStore dataStore,
                                ApiClient apiClient) {
         super(R.layout.fragment_article_list);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
-        this.database = database;
+        this.dataStore = dataStore;
         this.apiClient = apiClient;
     }
 
@@ -51,7 +54,8 @@ public class ArticleListFragment extends Fragment {
         adapter.onArticleClickListener = this::onArticleClick;
         binding.recyclerView.setAdapter(adapter);
         adapter.notifyItemChanged(0);
-        viewModel = ArticleListViewModel.of(this, crashReporter, usageTracker, database, apiClient);
+        viewModel =
+                ArticleListViewModel.of(this, crashReporter, usageTracker, dataStore, apiClient);
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         viewModel.getArticles().observe(viewLifecycleOwner, this::onArticlesChanged);
         viewModel.isLoading().observe(viewLifecycleOwner, this::onLoadingChanged);

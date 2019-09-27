@@ -1,14 +1,19 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network.messages;
 
-import info.mschmitt.testing.EmailRandomizer;
-import info.mschmitt.testing.LoggingUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import info.mschmitt.shop.core.network.FirebaseServiceException;
+import info.mschmitt.shop.core.network.FirebaseServiceFactory;
+import info.mschmitt.shop.core.network.IdentityToolkitService;
+import info.mschmitt.shop.core.network.SecureTokenService;
+import info.mschmitt.testing.EmailRandomizer;
+import info.mschmitt.testing.LoggingUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static com.google.common.truth.Truth.assertThat;
 

@@ -1,14 +1,19 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+
 import info.mschmitt.shop.core.util.RxJava2ErrorCallAdapterFactory;
-import okhttp3.*;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.io.IOException;
 
 /**
  * @author Matthias Schmitt

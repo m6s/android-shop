@@ -1,4 +1,4 @@
-package info.mschmitt.shop.core.network.firebase;
+package info.mschmitt.shop.core.network.messages;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
