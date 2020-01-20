@@ -52,11 +52,20 @@ public class ShopServiceFactory {
                 .create(ShopService.class);
     }
 
-    private Request authenticate(Route route, Response response) {
+    private Request authenticate(Route route, Response response) throws IOException {
         String refreshToken = dataStore.getRefreshToken();
-        RefreshIdTokenResponseBody responseBody = secureTokenService
-                .refreshIdToken(SecureTokenService.GRANT_TYPE_REFRESH_TOKEN, refreshToken)
-                .blockingGet();
+        RefreshIdTokenResponseBody responseBody;
+        try {
+            responseBody = secureTokenService
+                    .refreshIdToken(SecureTokenService.GRANT_TYPE_REFRESH_TOKEN, refreshToken)
+                    .blockingGet();
+        } catch (RuntimeException ex) {
+            if (ex.getCause() instanceof IOException) {
+                throw (IOException) ex.getCause();
+            } else {
+                throw ex;
+            }
+        }
         dataStore.setAccessToken(responseBody.accessToken);
         Request.Builder builder = response.request().newBuilder();
         addAuthorizationHeader(builder, responseBody.accessToken);
