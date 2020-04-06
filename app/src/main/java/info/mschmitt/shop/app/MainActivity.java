@@ -5,13 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
+import info.mschmitt.shop.app.databinding.ActivityMainBinding;
 import info.mschmitt.shop.core.CrashReporter;
 import info.mschmitt.shop.core.UsageTracker;
 import info.mschmitt.shop.core.network.ApiClient;
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().setFragmentFactory(new FragmentFactory() {
             @NonNull
             @Override
-            public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
+            public Fragment instantiate(@NonNull ClassLoader classLoader,
+                                        @NonNull String className) {
                 if (className.equals(SplashFragment.class.getName())) {
                     return new SplashFragment();
                 } else if (className.equals(OnboardingFragment.class.getName())) {
@@ -52,26 +53,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         super.onCreate(savedInstanceState);
-        DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+    }
+
+    @Override
+    protected void onPause() {
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().getPrimaryNavigationFragment();
+        assert navHostFragment != null;
+        navHostFragment
+                .getNavController()
+                .removeOnDestinationChangedListener(onDestinationChangedListener);
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().getPrimaryNavigationFragment();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().getPrimaryNavigationFragment();
         assert navHostFragment != null;
-        navHostFragment.getNavController().addOnDestinationChangedListener(onDestinationChangedListener);
+        navHostFragment
+                .getNavController()
+                .addOnDestinationChangedListener(onDestinationChangedListener);
     }
 
-    @Override
-    protected void onPause() {
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().getPrimaryNavigationFragment();
-        assert navHostFragment != null;
-        navHostFragment.getNavController().removeOnDestinationChangedListener(onDestinationChangedListener);
-        super.onPause();
-    }
-
-    private void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination,
+    private void onDestinationChanged(@NonNull NavController controller,
+                                      @NonNull NavDestination destination,
                                       @Nullable Bundle arguments) {
         switch (destination.getId()) {
             case R.id.articleListFragment:
@@ -81,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setDependencies(CrashReporter crashReporter, UsageTracker usageTracker,
-                                DataStore dataStore,
-                                ApiClient apiClient) {
+                                DataStore dataStore, ApiClient apiClient) {
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
         this.dataStore = dataStore;
