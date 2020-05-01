@@ -36,8 +36,7 @@ public class ArticleListFragment extends Fragment {
     private ArticleListAdapter adapter;
 
     public ArticleListFragment(CrashReporter crashReporter, UsageTracker usageTracker,
-                               DataStore dataStore,
-                               ApiClient apiClient) {
+                               DataStore dataStore, ApiClient apiClient) {
         super(R.layout.fragment_article_list);
         this.crashReporter = crashReporter;
         this.usageTracker = usageTracker;
@@ -48,7 +47,8 @@ public class ArticleListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding = FragmentArticleListBinding.bind(view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false);
         binding.recyclerView.setLayoutManager(layoutManager);
         adapter = new ArticleListAdapter();
         adapter.onArticleClickListener = this::onArticleClick;
@@ -65,7 +65,8 @@ public class ArticleListFragment extends Fragment {
     private void onArticleClick(Article article) {
         setEnabled(false);
         NavDirections directions =
-                ArticleListFragmentDirections.actionArticleListFragmentToArticleDetailsFragment(article);
+                ArticleListFragmentDirections.actionArticleListFragmentToArticleDetailsFragment(
+                        article);
         NavHostFragment.findNavController(this).navigate(directions);
     }
 
