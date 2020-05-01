@@ -12,27 +12,30 @@ import java.util.List;
 
 import info.mschmitt.shop.app.databinding.ItemArticleBinding;
 import info.mschmitt.shop.core.storage.Article;
-import info.mschmitt.shop.core.util.DataBindingViewHolder;
+import info.mschmitt.shop.core.util.ViewBindingViewHolder;
 
 /**
  * @author Matthias Schmitt
  */
-public class ArticleListAdapter extends RecyclerView.Adapter<DataBindingViewHolder<ItemArticleBinding>> {
+public class ArticleListAdapter
+        extends RecyclerView.Adapter<ViewBindingViewHolder<ItemArticleBinding>> {
     public OnArticleClickListener onArticleClickListener;
     private final ArrayList<Article> articles = new ArrayList<>();
     private boolean enabled = true;
 
     @NonNull
     @Override
-    public DataBindingViewHolder<ItemArticleBinding> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewBindingViewHolder<ItemArticleBinding> onCreateViewHolder(@NonNull ViewGroup parent,
+                                                                        int viewType) {
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         ItemArticleBinding binding = ItemArticleBinding.inflate(layoutInflater, parent, false);
-        return new DataBindingViewHolder<>(binding);
+        return new ViewBindingViewHolder<>(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DataBindingViewHolder<ItemArticleBinding> holder, int position) {
+    public void onBindViewHolder(@NonNull ViewBindingViewHolder<ItemArticleBinding> holder,
+                                 int position) {
         Article article = articles.get(position);
         holder.binding.nameText.setText(article.name);
         holder.itemView.setOnClickListener(v -> {

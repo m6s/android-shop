@@ -6,10 +6,10 @@ import androidx.viewbinding.ViewBinding;
 /**
  * @author Matthias Schmitt
  */
-public class DataBindingViewHolder<T extends ViewBinding> extends RecyclerView.ViewHolder {
+public class ViewBindingViewHolder<T extends ViewBinding> extends RecyclerView.ViewHolder {
     public final T binding;
 
-    public DataBindingViewHolder(T binding) {
+    public ViewBindingViewHolder(T binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
